@@ -1,10 +1,10 @@
+import { eq } from "drizzle-orm";
 import express from "express";
+import db from "./db";
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+
 
 app.get("/h", (req, res) => {
   res.send("Hello World");
