@@ -10,3 +10,7 @@ npx drizzle-kit push
 
 npx drizzle-kit generate
 npx drizzle-kit migrate
+
+**More Convenient**
+
+drizzle-kit generate:mysql/pg --schema ./path --out=./path

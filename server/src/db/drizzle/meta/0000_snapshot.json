@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "75238c9c-8b12-409b-96e2-207d01521775",
+  "id": "7000ba0d-6c7c-4fbc-bb98-76edf13934e6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "buildings": {
@@ -9,10 +9,10 @@
       "columns": {
         "building_id": {
           "name": "building_id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "building_name": {
           "name": "building_name",
@@ -34,6 +34,23 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
         }
       },
       "indexes": {},
@@ -54,17 +71,17 @@
       "columns": {
         "room_id": {
           "name": "room_id",
-          "type": "int",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "building_id": {
           "name": "building_id",
-          "type": "int",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "room_no": {
           "name": "room_no",
@@ -77,7 +94,7 @@
           "name": "room_type_enum",
           "type": "enum('CLASS','LAB','LIBRARY','PLAYGROUND','HALL')",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "'CLASS'"
         },
@@ -95,40 +112,40 @@
           "notNull": true,
           "autoincrement": false
         },
-        "hasProjector": {
-          "name": "hasProjector",
+        "has_projector": {
+          "name": "has_projector",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": false
         },
-        "hasAC": {
-          "name": "hasAC",
+        "has_ac": {
+          "name": "has_ac",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": false
         },
-        "hasFan": {
-          "name": "hasFan",
+        "has_fan": {
+          "name": "has_fan",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": false
         },
-        "hasCCTV": {
-          "name": "hasCCTV",
+        "has_cctv": {
+          "name": "has_cctv",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": false
         },
-        "hasWhiteBoard": {
-          "name": "hasWhiteBoard",
+        "has_white_board": {
+          "name": "has_white_board",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
@@ -152,7 +169,16 @@
           "default": "CURRENT_TIMESTAMP"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "unique_building_room": {
+          "name": "unique_building_room",
+          "columns": [
+            "building_id",
+            "room_no"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "rooms_building_id_buildings_building_id_fk": {
           "name": "rooms_building_id_buildings_building_id_fk",
@@ -177,7 +203,12 @@
         }
       },
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraint": {
+        "check_capacity": {
+          "name": "check_capacity",
+          "value": "`rooms`.`capacity`>0"
+        }
+      }
     },
     "notices": {
       "name": "notices",

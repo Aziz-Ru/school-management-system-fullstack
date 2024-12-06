@@ -1,26 +1,30 @@
 CREATE TABLE `buildings` (
-	`building_id` int NOT NULL,
+	`building_id` serial AUTO_INCREMENT NOT NULL,
 	`building_name` varchar(255) NOT NULL,
 	`total_floor` int NOT NULL,
 	`total_room` int NOT NULL,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `buildings_building_id` PRIMARY KEY(`building_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `rooms` (
-	`room_id` int NOT NULL,
-	`building_id` int NOT NULL,
+	`room_id` varchar(255) NOT NULL,
+	`building_id` serial AUTO_INCREMENT NOT NULL,
 	`room_no` int NOT NULL,
-	`room_type_enum` enum('CLASS','LAB','LIBRARY','PLAYGROUND','HALL') DEFAULT 'CLASS',
+	`room_type_enum` enum('CLASS','LAB','LIBRARY','PLAYGROUND','HALL') NOT NULL DEFAULT 'CLASS',
 	`floor_no` int NOT NULL,
 	`capacity` int NOT NULL,
-	`hasProjector` boolean DEFAULT false,
-	`hasAC` boolean DEFAULT false,
-	`hasFan` boolean DEFAULT false,
-	`hasCCTV` boolean DEFAULT false,
-	`hasWhiteBoard` boolean DEFAULT false,
+	`has_projector` boolean DEFAULT false,
+	`has_ac` boolean DEFAULT false,
+	`has_fan` boolean DEFAULT false,
+	`has_cctv` boolean DEFAULT false,
+	`has_white_board` boolean DEFAULT false,
 	`status` enum('AVAILABLE','OCCUPIED') DEFAULT 'AVAILABLE',
 	`createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT `rooms_room_id` PRIMARY KEY(`room_id`)
+	CONSTRAINT `rooms_room_id` PRIMARY KEY(`room_id`),
+	CONSTRAINT `unique_building_room` UNIQUE(`building_id`,`room_no`),
+	CONSTRAINT `check_capacity` CHECK(`rooms`.`capacity`>0)
 );
 --> statement-breakpoint
 CREATE TABLE `notices` (

@@ -131,7 +131,7 @@ export const notificationStatusEnum = mysqlEnum("notification_status_enum", [
   "FAILED",
 ]);
 
-export const roomTypeEnum = mysqlEnum("room_type_enum", [
+export const RoomTypeEnum = mysqlEnum("room_type_enum", [
   "CLASS",
   "LAB",
   "LIBRARY",
